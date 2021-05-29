@@ -552,14 +552,15 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 		}
 		return reputation / count;
 	}
-        /**
-	 * This method is used to form all timeline that a person can eat lunch
-	 * with other persons in 11-14.
+
+	/**
+	 * This method is used to form all timeline that a person can eat lunch with
+	 * other persons in 11-14.
 	 *
-	 * @param gloryPerson The person which want to eat lunch with others to 
-         * increase reputation.
-	 * @return 2D ArrayList which have all the person that gloryPerson can 
-         * eat lunch with.
+	 * @param gloryPerson The person which want to eat lunch with others to
+	 * increase reputation.
+	 * @return 2D ArrayList which have all the person that gloryPerson can eat
+	 * lunch with.
 	 */
 	private ArrayList<ArrayList<T>> formAllPath(T gloryPerson) {
 		ArrayList<ArrayList<T>> allPath = new ArrayList<>();
@@ -568,70 +569,71 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 		}
 		Vertex<T, N> temp = head;
 		while (temp != null) {
-                        //if the vertex is not gloryPerson
+			// If the vertex is not gloryPerson
 			if (temp.getVertexInfo().compareTo(gloryPerson) != 0) {
-                                //if one of the rep of the vertex is higher than 5(which means high reputation) 
+				// If one of the rep of the vertex is higher than 5(which means high reputation) 
 				if (repOf(temp.getVertexInfo()) > 5) {
-                                        //create a new arraylist (which represents each timeline) for each possible vertex and add their vertexinfo into the arraylist
+					// Create a new arraylist (which represents each timeline) for each possible vertex and add their vertexinfo into the arraylist
 					ArrayList<T> possibleHead = new ArrayList<>();
 					possibleHead.add(temp.getVertexInfo());
-                                        //add it to the 2d arraylist
+					// Add it to the 2d arraylist
 					allPath.add(possibleHead);
 				}
 			}
 			temp = temp.getNextVertex();
 		}
-                //create passed to use it as a parameter in findNextPossibleNode
+		// Create passed to use it as a parameter in findNextPossibleNode
 		ArrayList<T> passed = new ArrayList<>();
 		passed.add(gloryPerson);
-                //for loop to complete all the path 
+		// For loop to complete all the path 
 		for (int i = 0; i < allPath.size(); i++) {
 			passed.add(allPath.get(i).get(0));
 			ArrayList<T> possiblePaths = new ArrayList<>();
-                        //use the findNextPossibleNode recursive methods to complete the path
+			// Use the findNextPossibleNode recursive methods to complete the path
 			ArrayList<T> answer = findNextPossibleNode(passed, Integer.MAX_VALUE, possiblePaths);
 			for (T loop : answer) {
 				allPath.get(i).add(loop);
 			}
-                        //reset the passed
+			// Reset the passed
 			passed = new ArrayList<>();
 			passed.add(gloryPerson);
 		}
 		return allPath;
 	}
-        /**
-	 * This recursive method is used to add the next possible nodes to each
-	 * path in the formAllPath method.
+
+	/**
+	 * This recursive method is used to add the next possible nodes to each path
+	 * in the formAllPath method.
 	 *
 	 * @param passed The ArrayList to check which vertex has been visited.
-         * @param tempEndTime the value to check which EndTime is smaller
-         * between other nodes.
-         * @param possiblePaths the ArrayList to keep all the element that can 
-         * form a path.
-	 * @return ArrayList which represents the possible paths 
+	 * @param tempEndTime the value to check which EndTime is smaller between
+	 * other nodes.
+	 * @param possiblePaths the ArrayList to keep all the element that can form
+	 * a path.
+	 * @return ArrayList which represents the possible paths
 	 */
 	private ArrayList<T> findNextPossibleNode(ArrayList<T> passed, int tempEndTime, ArrayList<T> possiblePaths) {
-                //create a boolean to check whether it need to recurse
+		// Create a boolean to check whether it need to recurse
 		boolean toRecurse = false;
 		Vertex<T, N> temp = head;
 		int currentEndTime;
 		while (temp != null) {
-                        //check whether the vertex has been visited
+			// Check whether the vertex has been visited
 			if (!passed.contains(temp.getVertexInfo())) {
-                                //if one of the rep of the vertex is higher than 5(which means high reputation)
+				// If one of the rep of the vertex is higher than 5(which means high reputation)
 				if (repOf(temp.getVertexInfo()) > 5) {
 					int currentStartTime = Integer.parseInt(temp.getLunchStart());
 					int previousEndTime = Integer.parseInt(findEndTime(passed.get(passed.size() - 1)));
 					currentEndTime = Integer.parseInt(findEndTime(temp.getVertexInfo()));
-                                        //check if the StartTime of current vertex in the path is greater than the End Time of previous vertex in the path
+					// Check if the StartTime of current vertex in the path is greater than the End Time of previous vertex in the path
 					if (currentStartTime > previousEndTime) {
-                                                //if the path have more than 1 vertex
+						// If the path have more than 1 vertex
 						if (passed.size() > 1) {
-                                                        //if the current vertex EndTime is shorter than the other vertex EndTime.
+							// If the current vertex EndTime is shorter than the other vertex EndTime.
 							if (currentEndTime < tempEndTime) {
-                                                                //set to Recurse to true(let it recurse)
+								// Set to Recurse to true(let it recurse)
 								toRecurse = true;
-                                                                //if shorter, set currentEndTime equals tempEndTime
+								// If shorter, set currentEndTime equals tempEndTime
 								tempEndTime = currentEndTime;
 							}
 						}
@@ -642,7 +644,7 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 		}
 
 		temp = head;
-                //for loop to add the possible vertex to the arraylist 
+		// For loop to add the possible vertex to the arraylist 
 		while (temp != null) {
 			if (findEndTime(temp.getVertexInfo()).equals(String.valueOf(tempEndTime))) {
 				passed.add(temp.getVertexInfo());
@@ -651,7 +653,7 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 			}
 			temp = temp.getNextVertex();
 		}
-                //recurse if toRecurse is true
+		// Recurse if toRecurse is true
 		if (toRecurse) {
 			tempEndTime = Integer.MAX_VALUE;
 			findNextPossibleNode(passed, tempEndTime, possiblePaths);
@@ -1073,13 +1075,14 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 		}
 		return "bad";
 	}
-        /**
+
+	/**
 	 * This method is used to find maximum rep a person can get from eating
-         * lunch with other person.
-	 * This method implements formAllPath to find all the possible people to
-         * eat with.
-	 * @param gloryPerson The person which want to eat lunch with others to 
-         * increase reputation.
+	 * lunch with other person. This method implements formAllPath to find all
+	 * the possible people to eat with.
+	 *
+	 * @param gloryPerson The person which want to eat lunch with others to
+	 * increase reputation.
 	 * @return Response message to pass back for HTTP request
 	 */
 	public String event3(T gloryPerson) {
@@ -1087,10 +1090,11 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 			return "NV";
 		}
 		ArrayList<ArrayList<T>> lunchList = formAllPath(gloryPerson);
-                System.out.println("All of the Possible Path: "+lunchList);
+		System.out.println("Event 3");
+		System.out.println("All of the Possible Path: " + lunchList);
 		int maxFriend = Integer.MIN_VALUE;
 		int IofMaxSize = 0;
-                //use a for loop to see which path is longest
+		// Use a for loop to see which path is longest
 		for (int i = 0; i < lunchList.size(); i++) {
 			if (lunchList.get(i).size() > maxFriend) {
 				maxFriend = lunchList.get(i).size();
@@ -1099,15 +1103,15 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 		}
 		String query;
 		session = driver.session();
+		int repCount = 0;
 		try (Transaction tx = session.beginTransaction()) {
-                        int repCount=0;
-                        //use a for loop to increase rep of the element in arraylist to gloryPerson or addEdge if originally do not have edge between them
+			// Use a for loop to increase rep of the element in arraylist to gloryPerson or addEdge if originally do not have edge between them
 			for (T friend : lunchList.get(IofMaxSize)) {
 				if (!hasEdge(gloryPerson, friend)) {
 					// Update the database with new relationship
 					query = "MATCH (a:Person), (b:Person) WHERE a.name = \'" + friend + "\' AND b.name = \'" + gloryPerson + "\' CREATE (a)-[r:FRIEND {reputation: " + 1 + "}]-> (b)";
 					tx.run(query);
-                                        repCount++;
+					repCount++;
 					addEdge(friend, 1, gloryPerson);
 				} else {
 					if (head == null) {
@@ -1120,9 +1124,9 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 							while (temp != null) {
 								if (temp.getDestination().getVertexInfo().compareTo(gloryPerson) == 0) {
 									temp.setRep(temp.getRep() + 1);
-                                                                        repCount++;
+									repCount++;
 									// Update the database with new reputation value 
-									// between this new friend and gloryPerson
+									// Between this new friend and gloryPerson
 									query = "MATCH (:Person {name: \'" + newFriend.getVertexInfo() + "\'})-[rel:FRIEND]-(:Person {name: \'" + gloryPerson + "\'}) SET rel.reputation = " + temp.getRep();
 									tx.run(query);
 								}
@@ -1133,12 +1137,12 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 					}
 				}
 			}
-                        System.out.println("Total reputation increased: "+repCount);
+			System.out.println("Total reputation increased: " + repCount);
 			tx.commit();
 			tx.close();
 		}
 		session.close();
-		return "good";
+		return String.valueOf(repCount);
 	}
 
 	/**
@@ -1268,7 +1272,8 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	 *
 	 * @param line The number of relationships exist
 	 * @param idividual Each entity in the relationship
-	 * @return Response message to pass back for HTTP request and all friendships
+	 * @return Response message to pass back for HTTP request and all
+	 * friendships
 	 */
 	public String event6(int line, int[] individual) {
 		System.out.println("\n--------Event 6--------");
@@ -1288,7 +1293,7 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 		for (int i = 1; i < max; i++) {
 			for (int j = i + 1; j <= max; j++) {
 				printAllPaths(i, j);
-				
+
 			}
 		}
 		String toReturn = String.valueOf(relationship) + "%" + result;

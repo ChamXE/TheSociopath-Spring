@@ -151,7 +151,8 @@ public class EventController {
 			return ResponseEntity.ok(response);
 		}
 		String msg = friendGraph.event3(person);
-		payload.put("status", msg);
+		payload.put("status", "good");
+		payload.put("answer", msg);
 		response.put("success", true);
 		response.put("payload", payload);
 		return ResponseEntity.ok(response);
