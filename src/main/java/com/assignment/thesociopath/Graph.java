@@ -1063,8 +1063,6 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 		// Traverse to the source vertex
 		while (temp != null) {
 			if (temp.getVertexInfo() == src) {
-				// Get neighbours of source vertex
-				ArrayList<T> neighboursOfSrc = getNeighbours(temp.getVertexInfo());
 				// Initiate propagation (Start chitchat between friends, and friends of friends)
 				System.out.println("Event 2");
 				findFriendsOfFriends(src, dest, rep, passed);
