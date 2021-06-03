@@ -220,8 +220,8 @@ public class EventController {
 		if (randomize) {
 			Random r = new Random();
 			do {
-				crush = r.nextInt(friendGraph.size) + 1;
-				rumour = r.nextInt(friendGraph.size) + 1;
+				crush = r.nextInt(friendGraph.getSize()) + 1;
+				rumour = r.nextInt(friendGraph.getSize()) + 1;
 			} while (friendGraph.getNeighbours(crush).contains(rumour) || crush == rumour || friendGraph.getNeighbours(rumour).contains(crush));
 		} else {
 		// Value given by user
