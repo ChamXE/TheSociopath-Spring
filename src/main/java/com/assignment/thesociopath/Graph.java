@@ -28,8 +28,8 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 
 	private final Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "123"));
 	private Session session;
-	Vertex<T, N> head;
-	int size;
+	private Vertex<T, N> head;
+	private int size;
 	private int relationship = 0;
 	private String result = "";
 	// Adjacency list for vertex
@@ -667,7 +667,7 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	 * @param s source
 	 * @param d destination
 	 */
-	public void printAllPaths(int s, int d) {
+	private void printAllPaths(int s, int d) {
 		ArrayList<Integer> visitedList = new ArrayList<>();
 		ArrayList<Integer> list = new ArrayList<>();
 
