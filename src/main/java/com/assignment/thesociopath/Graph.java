@@ -35,6 +35,8 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	// Adjacency list for vertex
 	private static LinkedList<Integer> adj[];
 	private int[][] teacherRep = new int[11][11];
+	private T[] person;
+	private int[][] friendlist;
 
 	public Graph() {
 		head = null;
@@ -42,7 +44,9 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	}
 
 	public Graph(T[] node, int[][] edges) {
-		clearDatabase();
+		resetDatabase();
+		this.person = node;
+		this.friendlist = edges;
 		head = null;
 		size = 0;
 		session = driver.session();
@@ -92,6 +96,8 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	 */
 	public void clear() {
 		head = null;
+		size = 0;
+		reformGraph();
 	}
 
 	/**
@@ -910,11 +916,37 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	/**
 	 * This method is to clear the database when the application first run.
 	 */
-	private void clearDatabase() {
+	public void resetDatabase() {
 		session = driver.session();
 		try (Transaction tx = session.beginTransaction()) {
 			String query = "MATCH (a) -[r] -> () DELETE a, r";
 			tx.run(query);
+			tx.commit();
+			tx.close();
+		}
+		session.close();
+	}
+
+	public void reformGraph() {
+		String query;
+		session = driver.session();
+		try (Transaction tx = session.beginTransaction()) {
+			for (T temp : person) {
+				// Create node in database
+				query = "CREATE (a:Person {name: \'" + temp + "\'})";
+				tx.run(query);
+				addVertex(temp);
+			}
+			for (int i = 0; i < friendlist.length; i++) {
+				for (int j = 0; j < friendlist[i].length; j++) {
+					if (friendlist[i][j] != 0) {
+						// Create relationship between the two vertex with the specific reputation value in database 
+						query = "MATCH (a:Person), (b:Person) WHERE a.name = \'" + person[i] + "\' AND b.name = \'" + person[j] + "\' CREATE (a)-[r:FRIEND {reputation: " + friendlist[i][j] + "}]-> (b)";
+						tx.run(query);
+						addEdge(person[i], friendlist[i][j], person[j]);
+					}
+				}
+			}
 			tx.commit();
 			tx.close();
 		}
