@@ -8,7 +8,6 @@ package com.assignment.thesociopath;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,6 +79,13 @@ public class EventController {
 
 			return ResponseEntity.ok(response);
 		}
+		if(teacher == student){
+			payload.put("status", "NE");
+			response.put("success", true);
+			response.put("payload", payload);
+
+			return ResponseEntity.ok(response);
+		}
 		boolean proceedEvent2 = Boolean.parseBoolean(request.get("proceedEvent2").toString());
 		String msg = friendGraph.event1(teacher, student);
 		if (proceedEvent2) {
@@ -115,6 +121,13 @@ public class EventController {
 			student = Integer.parseInt(request.get("student").toString());
 		} catch (NumberFormatException e) {
 			payload.put("status", "NFE");
+			response.put("success", true);
+			response.put("payload", payload);
+
+			return ResponseEntity.ok(response);
+		}
+		if(teacher == student){
+			payload.put("status", "NE");
 			response.put("success", true);
 			response.put("payload", payload);
 
