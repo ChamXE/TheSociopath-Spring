@@ -1269,7 +1269,7 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	 * Find the total number of unique ways the friendship can be formed.
 	 *
 	 * @param line The number of relationships exist
-	 * @param idividual Each entity in the relationship
+	 * @param individual Each entity in the relationship
 	 * @return Response message to pass back for HTTP request and all
 	 * friendships
 	 */
