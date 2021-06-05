@@ -1213,18 +1213,18 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 	}
 
 	/**
-	 * This method is to determine if a rumors spread from a stranger, are we
-	 * able to stop the rumors before it reaches our crush where the rumors
+	 * This method is to determine if a rumours spread from a stranger, are we
+	 * able to stop the rumours before it reaches our crush where the rumours
 	 * propagates at one jump per day.
 	 *
 	 * This method implement the method findAllPath to find all the possible
-	 * path for the rumors to reach the crush and compare the days of every
+	 * path for the rumours to reach the crush and compare the days of every
 	 * path.
 	 *
-	 * Precondition: Rumors and crush cannot be friends
+	 * Precondition: Rumours and crush cannot be friends
 	 *
-	 * @param rumours The vertex where the rumors start spreading
-	 * @param crush The vertex where we should stop the rumors from reaching it
+	 * @param rumours The vertex where the rumours start spreading
+	 * @param crush The vertex where we should stop the rumours from reaching it
 	 * @return Response message to pass back for HTTP request
 	 */
 	public String event5(T rumours, T crush) {
