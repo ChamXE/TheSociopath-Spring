@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EventController {
 	// Vertex
-	Integer[] person = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	private Integer[] person = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	// Adjacency matrix with weight
-	int[][] friendlist = {
+	private int[][] friendlist = {
 		{0, 5, 0, 0, 0, 0, 4, 0, 0, 0},
 		{8, 0, 5, 0, 6, 9, 0, 0, 0, 0},
 		{0, 4, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -35,7 +35,7 @@ public class EventController {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
 		{0, 0, 0, 7, 0, 0, 0, 0, 6, 0},};
 	// Create graph
-	Graph<Integer, Integer> friendGraph = new Graph<>(person, friendlist);
+	private Graph<Integer, Integer> friendGraph = new Graph<>(person, friendlist);
 	
 	/**
 	 * This method is used to clear database when a HTTP POST request is mapped
@@ -45,11 +45,12 @@ public class EventController {
 	 * @return response message of success clearance
 	 */
 	@RequestMapping(value = "/api/clearDb/", method = RequestMethod.POST)
-	public ResponseEntity clearDatabase(@RequestBody Map<String,Object> request){
+	public ResponseEntity clearDatabase(){
 		Map<String,Object> payload = new HashMap<>();
 		Map<String,Object> response = new HashMap<>();
+		friendGraph.resetDatabase();
 		friendGraph.clear();
-		friendGraph = new Graph<>(person, friendlist);
+		System.out.println("Clear database");
 		payload.put("status", "good");
 		response.put("success", true);
 		response.put("payload", payload);
@@ -152,10 +153,10 @@ public class EventController {
 	public ResponseEntity event3(@RequestBody Map<String, Object> request) {
 		Map<String, Object> payload = new HashMap<>();
 		Map<String, Object> response = new HashMap<>();
-		int person;
+		int gloryPerson;
 		// Number Format Exception handler
 		try {
-			person = Integer.parseInt(request.get("person").toString());
+			gloryPerson = Integer.parseInt(request.get("person").toString());
 		} catch (NumberFormatException e) {
 			payload.put("status", "NFE");
 			response.put("success", true);
@@ -163,7 +164,7 @@ public class EventController {
 
 			return ResponseEntity.ok(response);
 		}
-		String msg = friendGraph.event3(person);
+		String msg = friendGraph.event3(gloryPerson);
 		payload.put("status", "good");
 		payload.put("answer", msg);
 		response.put("success", true);
