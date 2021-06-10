@@ -15,6 +15,7 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
+import org.neo4j.driver.exceptions.ServiceUnavailableException;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -68,6 +69,11 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 				}
 			}
 			tx.commit();
+		}
+		catch(ServiceUnavailableException e){
+			System.out.println("Not connected to database!");
+			System.out.println("Please start the database and restart the application!");
+			System.exit(0);
 		}
 		session.close();
 	}
@@ -923,6 +929,11 @@ public class Graph<T extends Comparable<T>, N extends Comparable<N>> {
 			tx.run(query);
 			tx.commit();
 			tx.close();
+		}
+		catch (ServiceUnavailableException e){
+			System.out.println("Not connected to database!");
+			System.out.println("Please start the database and restart the application!");
+			System.exit(0);
 		}
 		session.close();
 	}
