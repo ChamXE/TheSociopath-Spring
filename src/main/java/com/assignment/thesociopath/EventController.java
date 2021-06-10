@@ -41,7 +41,6 @@ public class EventController {
 	 * This method is used to clear database when a HTTP POST request is mapped
 	 * at "/api/clearDb/".
 	 * 
-	 * @param request hold the request data
 	 * @return response message of success clearance
 	 */
 	@RequestMapping(value = "/api/clearDb/", method = RequestMethod.POST)
